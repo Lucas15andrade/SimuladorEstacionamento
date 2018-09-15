@@ -44,6 +44,29 @@ void setup() {
 
   //Partições nebulosas: inferiorDireito, superiorDireito, verticalDireito, vertical, verticalEsquerda, superiorEsqueda, inferiorEsquerda
 
+  FuzzySet* inferiorDireito = new FuzzySet(-90,-45,-45,15);
+  posicaoY->addFuzzySet(inferiorDireito);
+  FuzzySet* superiorDireito = new FuzzySet(-15,30,30,60);
+  posicaoY->addFuzzySet(superiorDireito);
+  FuzzySet* verticalDireito = new FuzzySet(45,67,67,90);
+  posicaoY->addFuzzySet(verticalDireito);
+  FuzzySet* vertical = new FuzzySet(75,90,90,105);
+  posicaoY->addFuzzySet(vertical);
+  FuzzySet* verticalEsquerda = new FuzzySet(90,112,112,135);
+  posicaoY->addFuzzySet(verticalEsquerda);
+  FuzzySet* superiorEsqueda = new FuzzySet(120,150,150,195);
+  posicaoY->addFuzzySet(superiorEsqueda);
+  FuzzySet* inferiorEsquerda = new FuzzySet(165,225,225,270);
+  posicaoY->addFuzzySet(inferiorEsquerda);
+  
+  //-------------------------------------------
+
+  //Criando um FuzzyOutput de saída
+  //anguloRoda
+  FuzzyOutput* anguloRoda = new FuzzyOutput(3);
+
+  //Partições nebulosas: negativoGrande, negativoMedio, negativoPequeno, zero, positivoPequeno, positivoMedio, positivoGrande
+  
 }
 
 void loop() {
