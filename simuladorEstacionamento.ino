@@ -36,6 +36,8 @@ void setup() {
   FuzzySet* direita = new FuzzySet(65,90,100,100);
   posicaoX->addFuzzySet(direita);
 
+  fuzzy->addFuzzyInput(posicaoX);
+
   //-------------------------------------------
 
   //Criando um FuzzyInput de entrada
@@ -58,6 +60,8 @@ void setup() {
   posicaoY->addFuzzySet(superiorEsqueda);
   FuzzySet* inferiorEsquerda = new FuzzySet(165,225,225,270);
   posicaoY->addFuzzySet(inferiorEsquerda);
+
+  fuzzy->addFuzzyInput(posicaoY);
   
   //-------------------------------------------
 
@@ -81,7 +85,8 @@ void setup() {
   anguloRoda->addFuzzySet(positivoMedio);
   FuzzySet* positivoGrande = new FuzzySet(15,15,30,30);
   anguloRoda->addFuzzySet(positivoGrande);
-  
+
+  fuzzy->addFuzzyOutput(anguloRoda);
   
 }
 
