@@ -66,6 +66,22 @@ void setup() {
   FuzzyOutput* anguloRoda = new FuzzyOutput(3);
 
   //Partições nebulosas: negativoGrande, negativoMedio, negativoPequeno, zero, positivoPequeno, positivoMedio, positivoGrande
+
+  FuzzySet* negativoGrande = new FuzzySet(-30,-30,-15,-15);
+  anguloRoda->addFuzzySet(negativoGrande);
+  FuzzySet* negativoMedio = new FuzzySet(-28,-15,-15,-5);
+  anguloRoda->addFuzzySet(negativoMedio);
+  FuzzySet* negativoPequeno = new FuzzySet(-10,-5,-5,0);
+  anguloRoda->addFuzzySet(negativoPequeno);
+  FuzzySet* zero = new FuzzySet(-5,0,0,5);
+  anguloRoda->addFuzzySet(zero);
+  FuzzySet* positivoPequeno = new FuzzySet(0,5,5,10);
+  anguloRoda->addFuzzySet(positivoPequeno);
+  FuzzySet* positivoMedio = new FuzzySet(5,15,15,25);
+  anguloRoda->addFuzzySet(positivoMedio);
+  FuzzySet* positivoGrande = new FuzzySet(15,15,30,30);
+  anguloRoda->addFuzzySet(positivoGrande);
+  
   
 }
 
