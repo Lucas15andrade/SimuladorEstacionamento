@@ -8,8 +8,8 @@
 #include <FuzzyRuleConsequent.h>
 #include <FuzzySet.h>
 
-//Constante que representa a distância fica em que o veículo é deslocado a cada passo.
-//Defibir melhor valor posteriormente.
+//Constante que representa a distância fixa em que o veículo é deslocado a cada passo.
+//Definir melhor valor posteriormente.
 const int w = 5;
 
 //Instanciando um objeto da biblioteca
@@ -35,6 +35,14 @@ void setup() {
   posicaoX->addFuzzySet(centroDireita);
   FuzzySet* direita = new FuzzySet(65,90,100,100);
   posicaoX->addFuzzySet(direita);
+
+  //-------------------------------------------
+
+  //Criando um FuzzyInput de entrada
+  //Posição Y = Rotação do veículo
+  FuzzyInput* posicaoY = new FuzzyInput(2);
+
+  //Partições nebulosas: inferiorDireito, superiorDireito, verticalDireito, vertical, verticalEsquerda, superiorEsqueda, inferiorEsquerda
 
 }
 
