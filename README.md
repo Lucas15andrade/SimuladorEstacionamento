@@ -14,3 +14,5 @@ no Ubuntu (/usr/share/arduino/libraries/) caso instalado via apt-get;
 no Windows, Mac ou Linux (Onde você baixou o IDE Arduino, a pasta de biblioteca está dentro)
 
 link: https://github.com/zerokol/eFLL
+
+Ou baixe a pasta disponibilizada aqui é adicione na pasta de bibliotecas do Arduino
