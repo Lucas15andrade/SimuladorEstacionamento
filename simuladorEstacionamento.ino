@@ -87,6 +87,18 @@ void setup() {
   anguloRoda->addFuzzySet(positivoGrande);
 
   fuzzy->addFuzzyOutput(anguloRoda);
+
+  //Conjuntos de entrada e saída criados.
+
+  //Se posição X = lateralEsquerda E posição Y = inferiorDireito ENTÃO angulo da roda = Positivo Pequeno
+  FuzzyRuleAntecedent* posLateralEsquerdaEInferiorDireito = new FuzzyRuleAntecedent();
+  posLateralEsquerda->joinWithAND(lateralEsquerda, inferiorDireito);
+  
+  FuzzyRuleConsequent* angPositivoPequeno = new FuzzyRuleConsequent();
+  angPositivoPequeno->addOutput(positivoPequeno);
+
+  FuzzyRule* fuzzyRule01 = new FuzzyRule(1, posLateralEsquerdaEInferiorDireito, angPositivoPequeno);
+  
   
 }
 
