@@ -15,4 +15,4 @@ no Windows, Mac ou Linux (Onde você baixou o IDE Arduino, a pasta de biblioteca
 
 link: https://github.com/zerokol/eFLL
 
-Ou baixe a pasta disponibilizada aqui é adicione na pasta de bibliotecas do Arduino
+Ou baixe a pasta disponibilizada aqui e adicione na pasta de bibliotecas do Arduino
