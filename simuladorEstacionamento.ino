@@ -8,16 +8,6 @@
 #include <FuzzyRuleConsequent.h>
 #include <FuzzySet.h>
 
-#include <Fuzzy.h>
-#include <FuzzyComposition.h>
-#include <FuzzyInput.h>
-#include <FuzzyIO.h>
-#include <FuzzyOutput.h>
-#include <FuzzyRule.h>
-#include <FuzzyRuleAntecedent.h>
-#include <FuzzyRuleConsequent.h>
-#include <FuzzySet.h>
-
 //Constante que representa a distância fixa em que o veículo é deslocado a cada passo.
 //Definir melhor valor posteriormente.
 const int w = 5;
@@ -265,6 +255,163 @@ void setup() {
 
   //Se posição X = centro E anguloVeiculo = vertical ENTÃO angulo da roda = zero
   FuzzyRule* rule18 = new FuzzyRule(18,antecedente18,consequente18);
+
+  FuzzyRuleAntecedent* antecedente19 = new FuzzyRuleAntecedent();
+  antecedent19->joinAND(centro, verticalEsquerda);
+
+  FuzzyRuleConsequent* consequente19 = new FuzzyRuleConsequent();
+  consequente19->addOutput(pequenoNegativo);
+
+  //Se posição x = centro e auguloVeículo = verticalEsquerda Então angulo da roda = negativoPequeno
+  FuzzyRule* rule19 = new FuzzyRule(19,antecedente19,consequente19);
+
+  FuzzyRuleAntecedent* antecedente20 = new FuzzyRuleAntecedent();
+  antecedent20->joinAND(centro, superiorEsquerda);
+
+  FuzzyRuleConsequent* consequente20 = new FuzzyRuleConsequent();
+  consequente20->addOutput(negativoGrande);
+
+  //Se posição x = centro e auguloVeículo = seperiorEsquerda Então angulo da roda = negativoGrande
+  FuzzyRule* rule20 = new FuzzyRule(20,antecedente20,consequente20);
+
+  FuzzyRuleAntecedent* antecedente21 = new FuzzyRuleAntecedent();
+  antecedent21->joinAND(centro, inferiorEsquerda);
+
+  FuzzyRuleConsequent* consequente21 = new FuzzyRuleConsequent();
+  consequente21->addOutput(negativoMedio);
+
+  //Se posição x = centro e auguloVeículo = inferiorEsquerda Então angulo da roda = negativoMedio
+  FuzzyRule* rule21 = new FuzzyRule(21,antecedente21,consequente21);
+
+  FuzzyRuleAntecedent* antecedente22 = new FuzzyRuleAntecedent();
+  antecedent22->joinAND(centroDireita, inferiorEsquerda);
+
+  FuzzyRuleConsequent* consequente22 = new FuzzyRuleConsequent();
+  consequente22->addOutput(positivoGrande);
+
+  //Se posição x = centroDireita e auguloVeículo = inferiorEsquerda Então angulo da roda = positivoGrande
+  FuzzyRule* rule22 = new FuzzyRule(22,antecedente22,consequente22);
+
+  FuzzyRuleAntecedent* antecedente23 = new FuzzyRuleAntecedent();
+  antecedent23->joinAND(centroDireita, superiorDireito);
+
+  FuzzyRuleConsequent* consequente20 = new FuzzyRuleConsequent();
+  consequente23->addOutput(positivoGrande);
+
+  //Se posição x = centroDireita e auguloVeículo = superiorDireito Então angulo da roda = positivoGrande
+  FuzzyRule* rule23 = new FuzzyRule(23,antecedente23,consequente23);
+
+  FuzzyRuleAntecedent* antecedente24 = new FuzzyRuleAntecedent();
+  antecedent24->joinAND(centroDireta, verticalDireito);
+
+  FuzzyRuleConsequent* consequente24 = new FuzzyRuleConsequent();
+  consequente24->addOutput(positivoMedio);
+
+  //Se posição x = centroDireita e auguloVeículo = verticalDireito Então angulo da roda = positivoMedio
+  FuzzyRule* rule24 = new FuzzyRule(24,antecedente24,consequente24);
+
+  FuzzyRuleAntecedent* antecedente25 = new FuzzyRuleAntecedent();
+  antecedent25->joinAND(centroDireita, vertical);
+
+  FuzzyRuleConsequent* consequente25 = new FuzzyRuleConsequent();
+  consequente25->addOutput(positivoMedio);
+
+  //Se posição x = centroDireita e auguloVeículo = vertical Então angulo da roda = positivoMedio
+  FuzzyRule* rule25 = new FuzzyRule(25,antecedente25,consequente25);
+
+  FuzzyRuleAntecedent* antecedente26 = new FuzzyRuleAntecedent();
+  antecedent26->joinAND(centroDireita, verticalEsquerda);
+
+  FuzzyRuleConsequent* consequente26 = new FuzzyRuleConsequent();
+  consequente26->addOutput(positivoPequeno);
+
+  //Se posição x = centroDireta e auguloVeículo = verticalEsquerda Então angulo da roda = positivoPequeno
+  FuzzyRule* rule26 = new FuzzyRule(26,antecedente26,consequente26);
+
+  FuzzyRuleAntecedent* antecedente27 = new FuzzyRuleAntecedent();
+  antecedent27->joinAND(centroDireita, superiorEsquerda);
+
+  FuzzyRuleConsequent* consequente27 = new FuzzyRuleConsequent();
+  consequente27->addOutput(negativoPequeno);
+
+  //Se posição x = centroDireita e auguloVeículo = seperiorEsquerda Então angulo da roda = negativoPequeno
+  FuzzyRule* rule27 = new FuzzyRule(27,antecedente27,consequente27);
+
+  FuzzyRuleAntecedent* antecedente28 = new FuzzyRuleAntecedent();
+  antecedent28->joinAND(centroDireita, inferiorEsquerda);
+
+  FuzzyRuleConsequent* consequente28 = new FuzzyRuleConsequent();
+  consequente28->addOutput(negativoMedio);
+
+  //Se posição x = centroDireita e auguloVeículo = inferiorEsquerda Então angulo da roda = negativoMedio
+  FuzzyRule* rule28 = new FuzzyRule(28,antecedente28,consequente28);
+
+  FuzzyRuleAntecedent* antecedente29 = new FuzzyRuleAntecedent();
+  antecedent29->joinAND(Direita, inferiorDireito);
+
+  FuzzyRuleConsequent* consequente29 = new FuzzyRuleConsequent();
+  consequente29->addOutput(positivoGrande);
+
+  //Se posição x = direita e auguloVeículo = inferiorDireito Então angulo da roda = positivoGrande
+  FuzzyRule* rule29 = new FuzzyRule(29,antecedente29,consequente29);
+
+  FuzzyRuleAntecedent* antecedente30 = new FuzzyRuleAntecedent();
+  antecedent30->joinAND(Direita, superiorDireito);
+
+  FuzzyRuleConsequent* consequente30 = new FuzzyRuleConsequent();
+  consequente30->addOutput(positivoGrande);
+
+  //Se posição x = dereito e auguloVeículo = seperiorDireito Então angulo da roda = positivoGrande
+  FuzzyRule* rule30 = new FuzzyRule(30,antecedente30,consequente30);
+
+  FuzzyRuleAntecedent* antecedente31 = new FuzzyRuleAntecedent();
+  antecedent31->joinAND(Direita, verticalDireito);
+
+  FuzzyRuleConsequent* consequente31 = new FuzzyRuleConsequent();
+  consequente31->addOutput(positivoGrande);
+
+  //Se posição x = direita e auguloVeículo = verticalDireito Então angulo da roda = positivoGrande
+  FuzzyRule* rule31 = new FuzzyRule(31,antecedente31,consequente31);
+
+  FuzzyRuleAntecedent* antecedente32 = new FuzzyRuleAntecedent();
+  antecedent32->joinAND(Direita, vertical);
+
+  FuzzyRuleConsequent* consequente32 = new FuzzyRuleConsequent();
+  consequente32->addOutput(positivoMedio);
+
+  //Se posição x = direita e auguloVeículo = vertical Então angulo da roda = positivoMedio
+  FuzzyRule* rule32 = new FuzzyRule(32,antecedente32,consequente32);
+
+  FuzzyRuleAntecedent* antecedente33 = new FuzzyRuleAntecedent();
+  antecedent33->joinAND(Direita, verticalEsquerda);
+
+  FuzzyRuleConsequent* consequente33 = new FuzzyRuleConsequent();
+  consequente33->addOutput(positivoPequeno);
+
+  //Se posição x = direita e auguloVeículo = verticalEsquerda Então angulo da roda = positivoPequeno
+  FuzzyRule* rule33 = new FuzzyRule(33,antecedente33,consequente33);
+
+  FuzzyRuleAntecedent* antecedente34 = new FuzzyRuleAntecedent();
+  antecedent34->joinAND(Direita, superiorEsquerda);
+
+  FuzzyRuleConsequent* consequente34 = new FuzzyRuleConsequent();
+  consequente34->addOutput(positivoPequeno);
+
+  //Se posição x = direita e auguloVeículo = seperiorEsquerda Então angulo da roda = positivoPequeno
+  FuzzyRule* rule34 = new FuzzyRule(34,antecedente34,consequente34);
+
+  FuzzyRuleAntecedent* antecedente35 = new FuzzyRuleAntecedent();
+  antecedent35->joinAND(Direita, inferiorEsquerda);
+
+  FuzzyRuleConsequent* consequente35 = new FuzzyRuleConsequent();
+  consequente35->addOutput(negativoPequeno);
+
+  //Se posição x = direita e auguloVeículo = inferiorEsquerda Então angulo da roda = negativoPequeno
+  FuzzyRule* rule35 = new FuzzyRule(35,antecedente35,consequente35);
+  
+  
+
+  
 }
 
 void loop() {
