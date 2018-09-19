@@ -15,6 +15,9 @@ const int w = 5;
 //Instanciando um objeto da biblioteca
 Fuzzy* fuzzy = new Fuzzy();
 
+FuzzySet* inferiorDireito = new FuzzySet(-90,-45,-45,15);
+FuzzySet* lateralEsquerda = new FuzzySet(0,0,10,35);
+
 void setup() {
   //Iniciando comunicação serial
   Serial.begin(9600);
@@ -25,7 +28,7 @@ void setup() {
 
   //Partições nebulosas: LateralEsquerda, CentroEsqueda, Centro, CentroDireita, Direita
 
-  FuzzySet* lateralEsquerda = new FuzzySet(0,0,10,35);
+  
   posicaoX->addFuzzySet(lateralEsquerda);
   FuzzySet* centroEsquerda = new FuzzySet(30,40,40,50);
   posicaoX->addFuzzySet(centroEsquerda);
@@ -49,7 +52,7 @@ void setup() {
 
   //Partições nebulosas: inferiorDireito, superiorDireito, verticalDireito, vertical, verticalEsquerda, superiorEsqueda, inferiorEsquerda
 
-  FuzzySet* inferiorDireito = new FuzzySet(-90,-45,-45,15);
+  
   anguloVeiculo->addFuzzySet(inferiorDireito);
   FuzzySet* superiorDireito = new FuzzySet(-15,30,30,60);
   anguloVeiculo->addFuzzySet(superiorDireito);
@@ -167,7 +170,7 @@ void setup() {
   //Se posição X = lateralEsquerda E anguloVeiculo = vertical ENTÃO angulo da roda = negativoMedio
   FuzzyRule* rule4 = new FuzzyRule(4,antecedente4,nM);
   
-  fuzzy->addFuzzyRule(rule4);
+//  fuzzy->addFuzzyRule(rule4);
   
   FuzzyRuleAntecedent* antecedente5 = new FuzzyRuleAntecedent();
   antecedente5->joinWithAND(lateralEsquerda,verticalEsquerda);
@@ -455,15 +458,23 @@ void setup() {
 
 void loop() {
   
-  fuzzy->setInput(1, 50); 
+  fuzzy->setInput(1, 10); 
   
-  fuzzy->setInput(2, -45);
+  fuzzy->setInput(2, 0);
   
   fuzzy->fuzzify(); 
   
   float output = fuzzy->defuzzify(1);
 
   Serial.println(output);
+
+  float pertinence = inferiorDireito->getPertinence();
+  float pertinence2 = lateralEsquerda->getPertinence();
+
+  Serial.println("pertinencia");
+  Serial.println(pertinence);
+  Serial.println(pertinence2);
+  Serial.println("");
 
  delay(100);
 
