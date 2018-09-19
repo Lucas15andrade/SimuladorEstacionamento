@@ -170,7 +170,7 @@ void setup() {
   //Se posição X = lateralEsquerda E anguloVeiculo = vertical ENTÃO angulo da roda = negativoMedio
   FuzzyRule* rule4 = new FuzzyRule(4,antecedente4,nM);
   
-//  fuzzy->addFuzzyRule(rule4);
+  fuzzy->addFuzzyRule(rule4);
   
   FuzzyRuleAntecedent* antecedente5 = new FuzzyRuleAntecedent();
   antecedente5->joinWithAND(lateralEsquerda,verticalEsquerda);
