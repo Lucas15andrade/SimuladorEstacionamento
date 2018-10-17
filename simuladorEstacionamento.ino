@@ -8,28 +8,26 @@
 #include <FuzzyRuleConsequent.h>
 #include <FuzzySet.h>
 
-//Constante que representa a distância fixa em que o veículo é deslocado a cada passo.
-//Definir melhor valor posteriormente.
-const int w = 5;
 
 //Instanciando um objeto da biblioteca
 Fuzzy* fuzzy = new Fuzzy();
 
-FuzzySet* inferiorDireito = new FuzzySet(-90,-45,-45,15);
-FuzzySet* lateralEsquerda = new FuzzySet(0,0,10,35);
+
 
 void setup() {
   //Iniciando comunicação serial
   Serial.begin(9600);
+  randomSeed(analogRead(0));
 
   //Criando um FuzzyInput de entrada
-  //Posição X = Posição do veículo em relação ao eixo horizontal X
+  //Posição X = Posição do veículo em relação ao eixo horizontal X [0 a 100]
   FuzzyInput* posicaoX = new FuzzyInput(1);
 
-  //Partições nebulosas: LateralEsquerda, CentroEsqueda, Centro, CentroDireita, Direita
+  //Partições nebulosas: Esquerda, CentroEsqueda, Centro, CentroDireita, Direita
 
   
-  posicaoX->addFuzzySet(lateralEsquerda);
+  FuzzySet* esquerda = new FuzzySet(0,0,10,35);  
+  posicaoX->addFuzzySet(esquerda);
   FuzzySet* centroEsquerda = new FuzzySet(30,40,40,50);
   posicaoX->addFuzzySet(centroEsquerda);
   FuzzySet* centro = new FuzzySet(45,50,50,55);
@@ -38,21 +36,19 @@ void setup() {
   posicaoX->addFuzzySet(centroDireita);
   FuzzySet* direita = new FuzzySet(65,90,100,100);
   posicaoX->addFuzzySet(direita);
-//
-//  FuzzySet* teste1 = new FuzzySet(30,40,40,50);
-//  posicaoX->addFuzzySet(teste1);
+
 
   fuzzy->addFuzzyInput(posicaoX);
 
   //-------------------------------------------
 
   //Criando um FuzzyInput de entrada
-  //Posição Y = Rotação do veículo
+  //Posição Y = Angulo do veículo [-90 a 270]
   FuzzyInput* anguloVeiculo = new FuzzyInput(2);
 
   //Partições nebulosas: inferiorDireito, superiorDireito, verticalDireito, vertical, verticalEsquerda, superiorEsqueda, inferiorEsquerda
 
-  
+  FuzzySet* inferiorDireito = new FuzzySet(-90,-45,-45,15);
   anguloVeiculo->addFuzzySet(inferiorDireito);
   FuzzySet* superiorDireito = new FuzzySet(-15,30,30,60);
   anguloVeiculo->addFuzzySet(superiorDireito);
@@ -67,8 +63,6 @@ void setup() {
   FuzzySet* inferiorEsquerda = new FuzzySet(165,225,225,270);
   anguloVeiculo->addFuzzySet(inferiorEsquerda);
 
-//  FuzzySet* teste2 = new FuzzySet(-90,-45,-45,15);
-//  anguloVeiculo->addFuzzySet(teste2);
 
   fuzzy->addFuzzyInput(anguloVeiculo);
   
@@ -95,8 +89,6 @@ void setup() {
   FuzzySet* positivoGrande = new FuzzySet(15,15,30,30);
   anguloRoda->addFuzzySet(positivoGrande);
 
-//  FuzzySet* teste3 = new FuzzySet(-25,-15,-15,-5);
-//  anguloRoda->addFuzzySet(teste3);
   
   fuzzy->addFuzzyOutput(anguloRoda);
 
@@ -106,12 +98,19 @@ void setup() {
   
   //Base de Regras
 
-//  FuzzyRuleConsequent* vrau = new FuzzyRuleConsequent();
-//  vrau->addOutput(teste3);
 
   //Consequentes
   FuzzyRuleConsequent* pS = new FuzzyRuleConsequent();
   pS->addOutput(positivoPequeno);
+
+  FuzzyRuleConsequent* pM = new FuzzyRuleConsequent();
+  pM->addOutput(positivoMedio);
+
+  FuzzyRuleConsequent* pB = new FuzzyRuleConsequent();
+  pB->addOutput(positivoGrande);
+
+  FuzzyRuleConsequent* zE = new FuzzyRuleConsequent();
+  zE->addOutput(zero);
 
   FuzzyRuleConsequent* nS = new FuzzyRuleConsequent();
   nS->addOutput(negativoPequeno);
@@ -119,79 +118,65 @@ void setup() {
   FuzzyRuleConsequent* nM = new FuzzyRuleConsequent();
   nM->addOutput(negativoMedio);
 
-  FuzzyRuleConsequent* zE = new FuzzyRuleConsequent();
-  zE->addOutput(zero);
-
   FuzzyRuleConsequent* nB = new FuzzyRuleConsequent();
   nB->addOutput(negativoGrande);
 
-  FuzzyRuleConsequent* pB = new FuzzyRuleConsequent();
-  pB->addOutput(positivoMedio);
 
-  FuzzyRuleConsequent* pM = new FuzzyRuleConsequent();
-  pM->addOutput(positivoGrande);
+  //Se posição X = esquerda E anguloVeiculo = inferiorDireito ENTÃO angulo da roda = PositivoPequeno
 
-
-//
-//  FuzzyRuleAntecedent* antecedente36 = new FuzzyRuleAntecedent();
-//  antecedente36->joinWithAND(teste1, teste2);
-//   
-//  //Se posição X = lateralEsquerda E anguloVeiculo = inferiorDireito ENTÃO angulo da roda = PositivoPequeno
-//  FuzzyRule* rule36 = new FuzzyRule(36, antecedente36, vrau);
-//  fuzzy->addFuzzyRule(rule36);
   
   FuzzyRuleAntecedent* antecedente1 = new FuzzyRuleAntecedent();
-  antecedente1->joinWithAND(lateralEsquerda, inferiorDireito);
+  antecedente1->joinWithAND(esquerda, inferiorDireito);
    
-  //Se posição X = lateralEsquerda E anguloVeiculo = inferiorDireito ENTÃO angulo da roda = PositivoPequeno
+  //Se posição X = esquerda E anguloVeiculo = inferiorDireito ENTÃO angulo da roda = PositivoPequeno
   FuzzyRule* rule1 = new FuzzyRule(1, antecedente1, pS);
 
   fuzzy->addFuzzyRule(rule1);
   
   FuzzyRuleAntecedent* antecedente2 = new FuzzyRuleAntecedent();
-  antecedente2->joinWithAND(lateralEsquerda,superiorDireito); 
+  antecedente2->joinWithAND(esquerda,superiorDireito); 
   
-  //Se posição X = lateralEsquerda E anguloVeiculo = superiorDireito ENTÂO angulo da roda = negativoPequeno
+  //Se posição X = esquerda E anguloVeiculo = superiorDireito ENTÂO angulo da roda = negativoPequeno
   FuzzyRule* rule2 = new FuzzyRule(2,antecedente2,nS);
 
   fuzzy->addFuzzyRule(rule2);
 
   FuzzyRuleAntecedent* antecedente3 = new FuzzyRuleAntecedent();
-  antecedente3->joinWithAND(lateralEsquerda,verticalDireito);
+  antecedente3->joinWithAND(esquerda,verticalDireito);
 
-  //Se posição X = lateralEsquerda E anguloVeiculo = verticalDireito ENTÃO angulo da roda = negativoMedio
+  //Se posição X = esquerda E anguloVeiculo = verticalDireito ENTÃO angulo da roda = negativoMedio
   FuzzyRule* rule3 = new FuzzyRule(3,antecedente3,nM);
   
   fuzzy->addFuzzyRule(rule3);
   
   FuzzyRuleAntecedent* antecedente4 = new FuzzyRuleAntecedent();
-  antecedente4->joinWithAND(lateralEsquerda,vertical);
+  antecedente4->joinWithAND(esquerda,vertical);
 
-  //Se posição X = lateralEsquerda E anguloVeiculo = vertical ENTÃO angulo da roda = negativoMedio
+  //Se posição X = esquerda E anguloVeiculo = vertical ENTÃO angulo da roda = negativoMedio
   FuzzyRule* rule4 = new FuzzyRule(4,antecedente4,nM);
   
   fuzzy->addFuzzyRule(rule4);
   
   FuzzyRuleAntecedent* antecedente5 = new FuzzyRuleAntecedent();
-  antecedente5->joinWithAND(lateralEsquerda,verticalEsquerda);
+  antecedente5->joinWithAND(esquerda,verticalEsquerda);
 
-  //Se posição X = lateralEsquerda E anguloVeiculo = verticalEsquerda ENTÃO angulo da roda = negativoGrande
+  //Se posição X = esquerda E anguloVeiculo = verticalEsquerda ENTÃO angulo da roda = negativoGrande
   FuzzyRule* rule5 = new FuzzyRule(5,antecedente5,nB);
 
   fuzzy->addFuzzyRule(rule5);
 
   FuzzyRuleAntecedent* antecedente6 = new FuzzyRuleAntecedent();
-  antecedente6->joinWithAND(lateralEsquerda,superiorEsquerda);
+  antecedente6->joinWithAND(esquerda,superiorEsquerda);
 
-  //Se posição X = lateralEsquerda E anguloVeiculo = superiorEsquerda ENTÃO angulo da roda = negativoGrande
+  //Se posição X = esquerda E anguloVeiculo = superiorEsquerda ENTÃO angulo da roda = negativoGrande
   FuzzyRule* rule6 = new FuzzyRule(6,antecedente6,nB);
 
   fuzzy->addFuzzyRule(rule6);
 
   FuzzyRuleAntecedent* antecedente7 = new FuzzyRuleAntecedent();
-  antecedente7->joinWithAND(lateralEsquerda,inferiorEsquerda);
+  antecedente7->joinWithAND(esquerda,inferiorEsquerda);
 
-  //SE posição X = lateralEsquerda E anguloVeiculo = inferiorEsquerda ENTÃO angulo da roda = negativoGrande
+  //SE posição X = esquerda E anguloVeiculo = inferiorEsquerda ENTÃO angulo da roda = negativoGrande
   FuzzyRule* rule7 = new FuzzyRule(7,antecedente7,nB);
 
   fuzzy->addFuzzyRule(rule7);
@@ -372,6 +357,7 @@ void setup() {
 
   fuzzy->addFuzzyRule(rule29);
 
+
   FuzzyRuleAntecedent* antecedente30 = new FuzzyRuleAntecedent();
   antecedente30->joinWithAND(direita, superiorDireito);
 
@@ -399,8 +385,8 @@ void setup() {
   FuzzyRuleAntecedent* antecedente33 = new FuzzyRuleAntecedent();
   antecedente33->joinWithAND(direita, verticalEsquerda);
 
-  //Se posição x = direita e auguloVeículo = verticalEsquerda Então angulo da roda = positivoPequeno
-  FuzzyRule* rule33 = new FuzzyRule(33,antecedente33,pS);
+  //Se posição x = direita e auguloVeículo = verticalEsquerda Então angulo da roda = positivoMedio
+  FuzzyRule* rule33 = new FuzzyRule(33,antecedente33,pM);
 
   fuzzy->addFuzzyRule(rule33);
 
@@ -419,63 +405,27 @@ void setup() {
   FuzzyRule* rule35 = new FuzzyRule(35,antecedente35,nS);
 
   fuzzy->addFuzzyRule(rule35);
-  //fuzzy->addFuzzyRule(rule36);
-//  fuzzy->addFuzzyRule(rule3);
-//  fuzzy->addFuzzyRule(rule4);
-//  fuzzy->addFuzzyRule(rule5);
-//  fuzzy->addFuzzyRule(rule6);
-//  fuzzy->addFuzzyRule(rule7);
-//  fuzzy->addFuzzyRule(rule8);
-//  fuzzy->addFuzzyRule(rule9);
-//  fuzzy->addFuzzyRule(rule10);
-//  fuzzy->addFuzzyRule(rule11);
-//  fuzzy->addFuzzyRule(rule12);
-//  fuzzy->addFuzzyRule(rule13);
-//  fuzzy->addFuzzyRule(rule14);
-//  fuzzy->addFuzzyRule(rule15);
-//  fuzzy->addFuzzyRule(rule16);
-//  fuzzy->addFuzzyRule(rule17);
-//  fuzzy->addFuzzyRule(rule18);
-//  fuzzy->addFuzzyRule(rule19);
-//  fuzzy->addFuzzyRule(rule20);
-//  fuzzy->addFuzzyRule(rule21);
-//  fuzzy->addFuzzyRule(rule22);
-//  fuzzy->addFuzzyRule(rule23);
-//  fuzzy->addFuzzyRule(rule24);
-//  fuzzy->addFuzzyRule(rule25);
-//  fuzzy->addFuzzyRule(rule26);
-//  fuzzy->addFuzzyRule(rule27);
-//  fuzzy->addFuzzyRule(rule28);
-//  fuzzy->addFuzzyRule(rule29);
-//  fuzzy->addFuzzyRule(rule30);
-//  fuzzy->addFuzzyRule(rule31);
-//  fuzzy->addFuzzyRule(rule32);
-//  fuzzy->addFuzzyRule(rule33);
-//  fuzzy->addFuzzyRule(rule34);
-//  fuzzy->addFuzzyRule(rule35);
   
 }
 
 void loop() {
+  int r1 = random(100);
+  int r2 = random(-90, 270);
   
-  fuzzy->setInput(1, 10); 
+  fuzzy->setInput(1, r1); 
   
-  fuzzy->setInput(2, 0);
+  fuzzy->setInput(2, r2);
   
   fuzzy->fuzzify(); 
   
   float output = fuzzy->defuzzify(1);
 
+  Serial.print("posicao: ");
+  Serial.println(r1);
+  Serial.print("angulo veiculo: ");
+  Serial.println(r2);
   Serial.println(output);
 
-  float pertinence = inferiorDireito->getPertinence();
-  float pertinence2 = lateralEsquerda->getPertinence();
-
-  Serial.println("pertinencia");
-  Serial.println(pertinence);
-  Serial.println(pertinence2);
-  Serial.println("");
-
- delay(100);
+  delay(2000);
 
 }
