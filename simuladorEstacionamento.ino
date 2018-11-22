@@ -6,19 +6,58 @@
 #include <FuzzyRule.h>
 #include <FuzzyRuleAntecedent.h>
 #include <FuzzyRuleConsequent.h>
-#include <FuzzySet.h>
+#include <FuzzySet.h>]
+#include <Ultrasonic.h>
+#include <Servo.h>
 
+#define pino_trigger 12
+#define pino_echo 13
 
 //Instanciando um objeto da biblioteca
 Fuzzy* fuzzy = new Fuzzy();
+Ultrasonic ultrasonic(pino_trigger, pino_echo);
+Servo servo;
 
+int eixo = 30;
+int angulo = 80;
+const int w = 1;
+long distancia;
+
+int pino1 = 3;
+int pino2 = 4;
+
+int pino3 = 6;
+int pino4 = 7;
+
+int pino5 = 9;
+int pino6 = 10;
 
 
 void setup() {
   //Iniciando comunicação serial
   Serial.begin(9600);
-  randomSeed(analogRead(0));
+  //randomSeed(analogRead(0));
+  servo.attach(11);
 
+  servo.write(90);
+
+  pinMode(pino1, OUTPUT);
+  pinMode(pino2, OUTPUT);
+  pinMode(pino3, OUTPUT);
+  pinMode(pino4, OUTPUT);
+  pinMode(pino5, OUTPUT);
+  pinMode(pino6, OUTPUT);
+
+  analogWrite(pino5, 150);
+  analogWrite(pino6, 150);
+
+  digitalWrite(pino1, HIGH);
+  digitalWrite(pino2, LOW);
+
+  digitalWrite(pino3, HIGH);
+  digitalWrite(pino4, LOW);
+
+  
   //Criando um FuzzyInput de entrada
   //Posição X = Posição do veículo em relação ao eixo horizontal X [0 a 100]
   FuzzyInput* posicaoX = new FuzzyInput(1);
@@ -409,23 +448,67 @@ void setup() {
 }
 
 void loop() {
-  int r1 = random(100);
-  int r2 = random(-90, 270);
+  //int r1 = random(100);
+  //int r2 = random(-90, 270);
+
+  //eixo: Posição do veículo em relação ao eixo x
+  //angulo: Angulo do veículo em relação a vaga (90° graus)
+
   
-  fuzzy->setInput(1, r1); 
+  fuzzy->setInput(1, eixo); 
   
-  fuzzy->setInput(2, r2);
+  fuzzy->setInput(2, angulo);
   
   fuzzy->fuzzify(); 
   
   float output = fuzzy->defuzzify(1);
 
+  //Implementar movimento do servoMotor com a saída da defuzificação
+
+  angulo = angulo + output;
+  eixo = eixo + w * cos(angulo);
+
+  /*
   Serial.print("posicao: ");
-  Serial.println(r1);
+  Serial.println(eixo);
   Serial.print("angulo veiculo: ");
-  Serial.println(r2);
+  Serial.println(angulo);
+  Serial.println("saida: ");
   Serial.println(output);
+  */
 
+  distancia = ultrasonic.Ranging(CM);// ultrassom.Ranging(CM) retorna a distancia em
+                                     // centímetros(CM) ou polegadas(INC)
+   Serial.print(distancia); //imprime o valor da variável distancia
+   Serial.println("cm");
+
+
+  if(distancia <= 30){
+    servo.write(70);
+    delay(1400);
+    //servo.write(90);
+  }
+  
+  //delay(2000);
+  servo.write(90);
+  /*
   delay(2000);
+  servo.write(120);
+  delay(2000);
+  servo.write(90);
+  delay(2000);
+  */
 
+/*
+  if(angulo == 90 && eixo == 50){
+    Serial.println("Entrou");
+  }
+ */
+
+  //delay(2000);
+
+}
+
+void equacaoMovimento(int eixo, int angulo){
+  
 }
