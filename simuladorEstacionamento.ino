@@ -39,7 +39,7 @@ void setup() {
   //randomSeed(analogRead(0));
   servo.attach(11);
 
-  servo.write(90);
+  servo.write(0);
 
   pinMode(pino1, OUTPUT);
   pinMode(pino2, OUTPUT);
@@ -48,8 +48,8 @@ void setup() {
   pinMode(pino5, OUTPUT);
   pinMode(pino6, OUTPUT);
 
-  analogWrite(pino5, 150);
-  analogWrite(pino6, 150);
+  analogWrite(pino5, 100);
+  analogWrite(pino6, 100);
 
   digitalWrite(pino1, HIGH);
   digitalWrite(pino2, LOW);
@@ -467,6 +467,8 @@ void loop() {
 
   angulo = angulo + output;
   eixo = eixo + w * cos(angulo);
+  //Serial.println(output);
+  Serial.println(eixo);
 
   /*
   Serial.print("posicao: ");
@@ -479,36 +481,27 @@ void loop() {
 
   distancia = ultrasonic.Ranging(CM);// ultrassom.Ranging(CM) retorna a distancia em
                                      // centímetros(CM) ou polegadas(INC)
-   Serial.print(distancia); //imprime o valor da variável distancia
-   Serial.println("cm");
+   //Serial.print(distancia); //imprime o valor da variável distancia
+   //Serial.println("cm");
 
-
-  if(distancia <= 30){
-    servo.write(70);
-    delay(1400);
+  
+  if(distancia <= 100){
+    servo.write(120);
+    delay(1200);
     //servo.write(90);
+  }else if(distancia > 100){
+
+    //for(int x = distancia; x < 90; x++){
+      servo.write(90);
+      delay(150);
+    //}
+    
   }
   
-  //delay(2000);
-  servo.write(90);
-  /*
-  delay(2000);
-  servo.write(120);
-  delay(2000);
-  servo.write(90);
-  delay(2000);
-  */
-
-/*
-  if(angulo == 90 && eixo == 50){
-    Serial.println("Entrou");
-  }
- */
-
-  //delay(2000);
-
-}
-
-void equacaoMovimento(int eixo, int angulo){
   
+ if(Serial.available() > 0){
+  
+ }
+  
+
 }
