@@ -18,8 +18,9 @@
 Fuzzy* fuzzy = new Fuzzy();
 Ultrasonic ultrasonic(pino_trigger, pino_echo);
 Servo servo;
+Servo servoRoda;
 
-int eixo = 30;
+int eixo = 0;
 int angulo = 80;
 const int w = 1;
 long distancia;
@@ -33,14 +34,18 @@ int pino4 = 7;
 int pino5 = 9;
 int pino6 = 10;
 
+int anguloInicial = 0;
 
 void setup() {
   //Iniciando comunicação serial
   Serial.begin(115200);
   //randomSeed(analogRead(0));
-  servo.attach(11);
 
+  servo.attach(2);
   servo.write(0);
+  servoRoda.attach(11);
+  servoRoda.write(90);
+
 
   pinMode(pino1, OUTPUT);
   pinMode(pino2, OUTPUT);
@@ -52,12 +57,45 @@ void setup() {
   analogWrite(pino5, 100);
   analogWrite(pino6, 100);
 
-  digitalWrite(pino1, HIGH);
-  digitalWrite(pino2, LOW);
+  //  digitalWrite(pino1, HIGH);
+  //  digitalWrite(pino2, LOW);
+  //
+  //  digitalWrite(pino3, HIGH);
+  //  digitalWrite(pino4, LOW);
 
-  digitalWrite(pino3, HIGH);
-  digitalWrite(pino4, LOW);
+  Serial.println("...Detectando objeto proximo para estacionar...");
 
+  //Vericando primeiro Angulo do Verículo
+  float menorDistancia = 999.0;
+
+  servo.write(60);
+  delay(500);
+
+  for (int i = 60; i < 120; i = i + 5) {
+
+    servo.write(i);
+    delay(200);
+
+    Serial.print("Distancia: ");
+    int nova = ultrasonic.Ranging(CM);
+    Serial.println(nova);
+
+    if (menorDistancia > nova ) {
+      menorDistancia = nova;
+      Serial.print("Menor distancia: ");
+      Serial.println(menorDistancia);
+      anguloInicial = i;
+      Serial.print("Angulo: ");
+      Serial.println(anguloInicial);
+    }
+  }
+
+  servo.write(anguloInicial);
+
+  Serial.print("Encontrado ... Angulo inicial: ");
+  Serial.println(anguloInicial);
+
+  angulo = anguloInicial;
 
   //Criando um FuzzyInput de entrada
   //Posição X = Posição do veículo em relação ao eixo horizontal X [0 a 100]
@@ -456,66 +494,63 @@ void loop() {
   //eixo: Posição do veículo em relação ao eixo x
   //angulo: Angulo do veículo em relação a vaga (90° graus)
 
+  Serial.println("Ajustando as rodas para posição inicial....");
 
-  //fuzzy->setInput(1, eixo);
 
-  //fuzzy->setInput(2, angulo);
+  //ajuste realizado para não quebrar o fking servo
+  if (angulo >= 140) {
+    angulo = 140;
+  } else if (angulo <= 40) {
+    angulo = 40;
+  }
 
-  //fuzzy->fuzzify();
+  Serial.print("o angulo eh: ");
+  Serial.println(angulo);
 
-  //float output = fuzzy->defuzzify(1);
+
+  //int giro = map(angulo, 40, 140, 140, 40);
+
+  //servoRoda.write(40);
+
+  //Variável eixo deverá ser ajustado de acordo com a execução dos testes.
+  fuzzy->setInput(1, eixo);
+  fuzzy->setInput(2, angulo);
+
+  fuzzy->fuzzify();
+
+  float output = fuzzy->defuzzify(1);
+
+  Serial.print("Angulo antes do ajuste: ");
+  Serial.println(angulo);
 
   //Implementar movimento do servoMotor com a saída da defuzificação
+  //Calcular a nova posição do angulo e do eixo.
 
-  //angulo = angulo + output;
-  //eixo = eixo + w * cos(angulo);
-  //Serial.println(output);
-  //Serial.println(eixo);
+  angulo = angulo + output;
+  eixo = eixo + w * cos(angulo);
 
-  /*
-    Serial.print("posicao: ");
-    Serial.println(eixo);
-    Serial.print("angulo veiculo: ");
-    Serial.println(angulo);
-    Serial.println("saida: ");
-    Serial.println(output);
-  */
+  Serial.print("Ajuste do angulo (output): ");
+  Serial.println(output);
 
-  //distancia = ultrasonic.Ranging(CM);// ultrassom.Ranging(CM) retorna a distancia em
-  // centímetros(CM) ou polegadas(INC)
-  //Serial.print(distancia); //imprime o valor da variável distancia
-  //Serial.println("cm");
+  Serial.println("Move, baby");
 
-  /*
-    if(distancia <= 100){
-    servo.write(120);
-    delay(1200);
-    //servo.write(90);
-    }else if(distancia > 100){
+  //  digitalWrite(pino1, HIGH);
+  //  digitalWrite(pino2, LOW);
+  //
+  //  digitalWrite(pino3, HIGH);
+  //  digitalWrite(pino4, LOW);
+  //
+  //  delay(100);
+  //
+  //  digitalWrite(pino1, LOW);
+  //  digitalWrite(pino2, LOW);
+  //
+  //  digitalWrite(pino3, LOW);
+  //  digitalWrite(pino4, LOW);
 
-    //for(int x = distancia; x < 90; x++){
-      servo.write(90);
-      delay(150);
-    //}
-
-    }
-  */
+  Serial.println("Rise and repeat");
 
 
-  if (Serial.available() > 0){
-    // Lê toda string recebida
-    String recebido = leStringSerial();
-      
-    
-  }
-  
-
-  /*
-  if(Serial.available() > 0){
-    String dado = leStringSerial();
-    Serial.print("dado: ");
-    Serial.println(dado);
-  }
-  */
+  // Serial.println(menorDistancia);
 
 }
