@@ -21,7 +21,7 @@ Servo servo;
 Servo servoRoda;
 
 int eixo = 0;
-int angulo = 80;
+int angulo;
 const int w = 1;
 long distancia;
 
@@ -42,10 +42,16 @@ void setup() {
   //randomSeed(analogRead(0));
 
   servo.attach(2);
-  servo.write(0);
+  servo.write(90);
+
   servoRoda.attach(11);
   servoRoda.write(90);
 
+  //servo.write(110);
+  //servoRoda.write(180-110);
+
+  //delay(55000000);
+  
 
   pinMode(pino1, OUTPUT);
   pinMode(pino2, OUTPUT);
@@ -498,10 +504,10 @@ void loop() {
 
 
   //ajuste realizado para não quebrar o fking servo
-  if (angulo >= 140) {
-    angulo = 140;
-  } else if (angulo <= 40) {
-    angulo = 40;
+  if (angulo >= 115) {
+    angulo = 115;
+  } else if (angulo <= 55) {
+    angulo = 55;
   }
 
   Serial.print("o angulo eh: ");
@@ -510,9 +516,11 @@ void loop() {
 
   //int giro = map(angulo, 40, 140, 140, 40);
 
-  //servoRoda.write(40);
+  servoRoda.write(180 - angulo);
 
-  //Variável eixo deverá ser ajustado de acordo com a execução dos testes.
+
+  //
+  //  //Variável eixo deverá ser ajustado de acordo com a execução dos testes.
   fuzzy->setInput(1, eixo);
   fuzzy->setInput(2, angulo);
 
@@ -522,7 +530,7 @@ void loop() {
 
   Serial.print("Angulo antes do ajuste: ");
   Serial.println(angulo);
-
+  
   //Implementar movimento do servoMotor com a saída da defuzificação
   //Calcular a nova posição do angulo e do eixo.
 
@@ -534,19 +542,19 @@ void loop() {
 
   Serial.println("Move, baby");
 
-  //  digitalWrite(pino1, HIGH);
-  //  digitalWrite(pino2, LOW);
-  //
-  //  digitalWrite(pino3, HIGH);
-  //  digitalWrite(pino4, LOW);
-  //
-  //  delay(100);
-  //
-  //  digitalWrite(pino1, LOW);
-  //  digitalWrite(pino2, LOW);
-  //
-  //  digitalWrite(pino3, LOW);
-  //  digitalWrite(pino4, LOW);
+  digitalWrite(pino1, HIGH);
+  digitalWrite(pino2, LOW);
+
+  digitalWrite(pino3, HIGH);
+  digitalWrite(pino4, LOW);
+
+  delay(100);
+
+  digitalWrite(pino1, LOW);
+  digitalWrite(pino2, LOW);
+
+  digitalWrite(pino3, LOW);
+  digitalWrite(pino4, LOW);
 
   Serial.println("Rise and repeat");
 
